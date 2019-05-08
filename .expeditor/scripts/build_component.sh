@@ -17,6 +17,10 @@ hab pkg install core/hab
 
 destination_channel=$BUILDKITE_BUILD_ID
 
+# Set these here because they're not propagating correctly?
+export HAB_LICENSE="accept-no-persist"
+export HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"
+
 hab_bin_path=$(hab pkg path core/hab)
 hab_binary="$hab_bin_path/bin/hab"
 hab_binary_version=$($hab_binary --version)
@@ -36,11 +40,9 @@ $hab_binary origin key download $HAB_ORIGIN
 $hab_binary origin key download --auth $SCOTTHAIN_HAB_AUTH_TOKEN --secret $HAB_ORIGIN
 
 echo "--- Using $hab_binary_version"
-export HAB_LICENSE="accept-no-persist"
-export HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"
 $hab_binary pkg build "components/${component}"
 # components/studio/bin/hab-studio.sh build "components/${component}"
 . results/last_build.env
 
-# # Always upload to the destination channel.
-# $hab_binary pkg upload --auth $SCOTTHAIN_HAB_AUTH_TOKEN --channel $destination_channel "results/$pkg_artifact"
+# Always upload to the destination channel.
+$hab_binary pkg upload --auth $SCOTTHAIN_HAB_AUTH_TOKEN --channel $destination_channel "results/$pkg_artifact"
