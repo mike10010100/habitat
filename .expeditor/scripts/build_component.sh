@@ -36,6 +36,8 @@ $hab_binary origin key download $HAB_ORIGIN
 $hab_binary origin key download --auth $SCOTTHAIN_HAB_AUTH_TOKEN --secret $HAB_ORIGIN
 
 echo "--- Using $hab_binary_version"
+export HAB_LICENSE="accept-no-persist"
+export HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"
 $hab_binary pkg build "components/${component}"
 # components/studio/bin/hab-studio.sh build "components/${component}"
 . results/last_build.env
