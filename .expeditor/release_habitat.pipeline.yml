@@ -29,4 +29,5 @@ steps:
           environment:
             - HAB_ORIGIN=core
             - HAB_LICENSE="accept-no-persist"
+            - HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"
             - HAB_BLDR_URL=https://bldr.acceptance.habitat.sh
