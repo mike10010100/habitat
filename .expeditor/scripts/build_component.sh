@@ -20,6 +20,7 @@ destination_channel=$BUILDKITE_BUILD_ID
 # Set these here because they're not propagating correctly?
 export HAB_LICENSE="accept-no-persist"
 export HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"
+export HAB_BLDR_URL=https://bldr.acceptance.habitat.sh
 
 hab_bin_path=$(hab pkg path core/hab)
 hab_binary="$hab_bin_path/bin/hab"

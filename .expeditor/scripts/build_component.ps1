@@ -17,6 +17,7 @@ $destination_channel = $Env:BUILDKITE_BUILD_ID
 
 $Env:HAB_LICENSE = "accept-no-persist"
 $Env:HAB_STUDIO_SECRET_HAB_LICENSE = "accept-no-persist"
+$Env:HAB_BLDR_URL=https://bldr.acceptance.habitat.sh
 
 choco install habitat -y
 
