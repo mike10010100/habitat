@@ -45,6 +45,7 @@ steps:
         image: "chefes/buildkite-windows"
         shell: [ "powershell", "-Command" ]
         environment:
+          - SCOTTHAIN_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
           - HAB_ORIGIN=core
           - HAB_LICENSE="accept-no-persist"
           - HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"

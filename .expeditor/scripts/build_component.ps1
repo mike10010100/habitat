@@ -29,11 +29,9 @@ $hab_binary_version = & $hab_binary --version
 
 Write-Host "--- Using habitat version $hab_binary_version"
 
-Write-Host "--- THING $SCOTTHAIN_HAB_AUTH_TOKEN -- $Env:SCOTTHAIN_HAB_AUTH_TOKEN "
-
 Write-Host "--- Running a build $Env:HAB_ORIGIN / $Component / $destination_channel"
 & $hab_binary origin key download $Env:HAB_ORIGIN
-& $hab_binary origin key download --auth $SCOTTHAIN_HAB_AUTH_TOKEN --secret $Env:HAB_ORIGIN
+& $hab_binary origin key download --auth $Env:SCOTTHAIN_HAB_AUTH_TOKEN --secret $Env:HAB_ORIGIN
 
 
 # Write-Host "--- Using $hab_binary_version"
