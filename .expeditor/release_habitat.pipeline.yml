@@ -31,3 +31,21 @@ steps:
             - HAB_LICENSE="accept-no-persist"
             - HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"
             - HAB_BLDR_URL=https://bldr.acceptance.habitat.sh
+
+  - label: ":windows: [build hab]"
+    command:
+      - .expeditor/scripts/build_component.ps1 -Component hab
+    # retry:
+    #   automatic:
+    #     limit: 1
+    agents:
+      queue: 'default-windows-privileged'
+    plugins:
+      docker#v3.0.1:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        environment:
+          - HAB_ORIGIN=core
+          - HAB_LICENSE="accept-no-persist"
+          - HAB_STUDIO_SECRET_HAB_LICENSE="accept-no-persist"
+          - HAB_BLDR_URL=https://bldr.acceptance.habitat.sh
