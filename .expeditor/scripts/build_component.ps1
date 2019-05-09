@@ -13,6 +13,8 @@ if($Component.Equals("")) {
   Write-Error "--- :error: Component to build not specified, please use the -Component flag"
 }
 
+& choco install habitat -y
+
 & hab pkg install core/hab
 
 $hab_bin_path = & hab pkg path core/hab
