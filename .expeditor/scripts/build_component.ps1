@@ -17,7 +17,7 @@ $destination_channel = $Env:BUILDKITE_BUILD_ID
 
 $Env:HAB_LICENSE = "accept-no-persist"
 $Env:HAB_STUDIO_SECRET_HAB_LICENSE = "accept-no-persist"
-$Env:HAB_BLDR_URL="https://bldr.acceptance.habitat.sh"
+$Env:HAB_BLDR_URL = "https://bldr.acceptance.habitat.sh"
 
 choco install habitat -y
 
@@ -34,12 +34,12 @@ Write-Host "--- Running a build $Env:HAB_ORIGIN / $Component / $destination_chan
 & $hab_binary origin key download --auth $Env:SCOTTHAIN_HAB_AUTH_TOKEN --secret $Env:HAB_ORIGIN
 
 
-Write-Host "--- Using $hab_binary_version"
-& $hab_binary pkg build "components/$Component"
-# components/studio/bin/hab-studio.sh build "components/${component}"
-. results/last_build.env
+# Write-Host "--- Using $hab_binary_version"
+# & $hab_binary pkg build "components/$Component"
+# # components/studio/bin/hab-studio.sh build "components/${component}"
+# . results/last_build.env
 
-# Always upload to the destination channel.
-& $hab_binary pkg upload --auth $Env:SCOTTHAIN_HAB_AUTH_TOKEN --channel $destination_channel "results/$pkg_artifact"
+# # Always upload to the destination channel.
+# & $hab_binary pkg upload --auth $Env:SCOTTHAIN_HAB_AUTH_TOKEN --channel $destination_channel "results/$pkg_artifact"
 
 exit $LASTEXITCODE
