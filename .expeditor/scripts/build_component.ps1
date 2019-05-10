@@ -13,7 +13,7 @@ if($Component.Equals("")) {
   Write-Error "--- :error: Component to build not specified, please use the -Component flag"
 }
 
-$destination_channel = $Env:BUILDKITE_BUILD_ID
+$destination_channel = $BUILDKITE_BUILD_ID
 
 $Env:HAB_LICENSE = "accept-no-persist"
 $Env:HAB_STUDIO_SECRET_HAB_LICENSE = "accept-no-persist"
