@@ -31,6 +31,8 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
+  - wait
+  
   - label: "[:linux: build hab-plan-build]"
     command:
       - .expeditor/scripts/build_component.sh plan-build
@@ -64,6 +66,21 @@ steps:
   - label: "[:linux: build hab-studio]"
     command:
       - .expeditor/scripts/build_component.sh studio
+    expeditor:
+      executor:
+        docker:
+          privileged: true
+          environment:
+            - HAB_ORIGIN
+            - BUILD_PKG_TARGET=x86_64-linux
+            - ACCEPTANCE_HAB_AUTH_TOKEN
+            - ACCEPTANCE_HAB_BLDR_URL
+
+  - wait
+
+  - label: "[:linux: build launcher]"
+    command:
+      - .expeditor/scripts/build_component.sh launcher
     expeditor:
       executor:
         docker:
@@ -175,6 +192,22 @@ steps:
   - label: "[:linux: build hab-pkg-cfize]"
     command:
       - .expeditor/scripts/build_component.sh pkg-cfize
+    expeditor:
+      executor:
+        docker:
+          privileged: true
+          environment:
+            - HAB_ORIGIN
+            - BUILD_PKG_TARGET=x86_64-linux
+            - ACCEPTANCE_HAB_AUTH_TOKEN
+            - ACCEPTANCE_HAB_BLDR_URL
+
+  - wait
+
+  # Promote all packages to the DEV channel
+  - label: "[:linux: promote to dev]"
+    command:
+      - .expeditor/scripts/promote_packages.sh habitat-release-$BUILDKITE_BUILD_ID DEV
     expeditor:
       executor:
         docker:

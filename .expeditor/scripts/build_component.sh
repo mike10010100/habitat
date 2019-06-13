@@ -23,7 +23,6 @@ component=${1}
 
 channel=$(get_release_channel)
 
-
 # `set_hab_binary` currently _must_ be called first!
 set_hab_binary
 import_keys
@@ -33,10 +32,10 @@ ${hab_binary} studio rm
 
 echo "--- :habicat: Building components/${component}"
 
-# The binlink dir is set by releng, but seems to be messing things up
-# for us in the studio.
-unset HAB_BINLINK_DIR
-export HAB_ORIGIN=core
+# # The binlink dir is set by releng, but seems to be messing things up
+# # for us in the studio.
+# unset HAB_BINLINK_DIR
+# export HAB_ORIGIN=core
 
 # Eww
 #

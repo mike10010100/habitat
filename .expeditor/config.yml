@@ -50,9 +50,20 @@ pipelines:
   - end_to_end:
       description: Habitat long running end to end tests - always runs on DEV environment
 
+staging_areas:
+  - post_merge:
+      workload: pull_request_merged:habitat-sh/habitat:master:*
+
 subscriptions:
   # These actions are taken, in order they are specified
   - workload: buildkite_build_passed:{{agent_id}}:release_habitat:*
     actions:
       - trigger_pipeline:end_to_end:
           post_commit: true
+
+  # Make sure we unlock to allow later builds if one fails.
+  - workload: buildkite_build_failed:{{agent_id}}:release_habitat:*
+    actions:
+      - unlock_staging_area:post_merge:
+          post_commit: true
+          always_run: true
