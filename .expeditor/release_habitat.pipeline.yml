@@ -31,189 +31,215 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
-  - wait
+  - label: "[:linux: :two: build hab]"
+    command:
+      - .expeditor/scripts/build_component.sh hab
+    expeditor:
+      executor:
+        docker:
+          privileged: true
+          environment:
+            - HAB_ORIGIN
+            - BUILD_PKG_TARGET=x86_64-linux2
+            - ACCEPTANCE_HAB_AUTH_TOKEN
+            - ACCEPTANCE_HAB_BLDR_URL
+
+  # - label: "[:windows: build hab]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh hab
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux2
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
+            
+  # - wait
   
-  - label: "[:linux: build hab-plan-build]"
-    command:
-      - .expeditor/scripts/build_component.sh plan-build
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-plan-build]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh plan-build
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - wait
+  # - wait
 
-  - label: "[:linux: build hab-backline]"
-    command:
-      - .expeditor/scripts/build_component.sh backline
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-backline]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh backline
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - wait
+  # - wait
 
-  - label: "[:linux: build hab-studio]"
-    command:
-      - .expeditor/scripts/build_component.sh studio
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-studio]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh studio
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - wait
+  # - wait
 
-  - label: "[:linux: build launcher]"
-    command:
-      - .expeditor/scripts/build_component.sh launcher
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build launcher]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh launcher
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - wait
+  # - wait
 
-  - label: "[:linux: build hab-sup]"
-    command:
-      - .expeditor/scripts/build_component.sh sup
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-  - wait
+  # - label: "[:linux: build hab-sup]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh sup
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
+  # - wait
 
-  - label: "[:linux: build hab-pkg-aci]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-aci
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-pkg-aci]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh pkg-aci
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - label: "[:linux: build hab-pkg-export-docker]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-export-docker
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-pkg-export-docker]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh pkg-export-docker
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - label: "[:linux: build hab-pkg-export-kubernetes]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-export-kubernetes
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-pkg-export-kubernetes]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh pkg-export-kubernetes
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - label: "[:linux: build hab-pkg-export-helm]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-export-helm
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-pkg-export-helm]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh pkg-export-helm
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - label: "[:linux: build hab-pkg-export-tar]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-export-tar
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-pkg-export-tar]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh pkg-export-tar
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - label: "[:linux: build hab-pkg-mesosize]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-mesosize
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # - label: "[:linux: build hab-pkg-mesosize]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh pkg-mesosize
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - wait
+  # - wait
 
-  # The cfize export currently has a dependency on
-  # hab-pkg-export-docker, so it must be built after that.
-  - label: "[:linux: build hab-pkg-cfize]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-cfize
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # # The cfize export currently has a dependency on
+  # # hab-pkg-export-docker, so it must be built after that.
+  # - label: "[:linux: build hab-pkg-cfize]"
+  #   command:
+  #     - .expeditor/scripts/build_component.sh pkg-cfize
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
 
-  - wait
+  # - wait
 
-  # Promote all packages to the DEV channel
-  - label: "[:linux: promote to dev]"
-    command:
-      - .expeditor/scripts/promote_packages.sh habitat-release-$BUILDKITE_BUILD_ID DEV
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+  # # Promote all packages to the DEV channel
+  # - label: "[:linux: promote to dev]"
+  #   command:
+  #     - .expeditor/scripts/promote_packages.sh habitat-release-$BUILDKITE_BUILD_ID DEV
+  #   expeditor:
+  #     executor:
+  #       docker:
+  #         privileged: true
+  #         environment:
+  #           - HAB_ORIGIN
+  #           - BUILD_PKG_TARGET=x86_64-linux
+  #           - ACCEPTANCE_HAB_AUTH_TOKEN
+  #           - ACCEPTANCE_HAB_BLDR_URL
