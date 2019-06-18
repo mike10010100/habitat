@@ -40,7 +40,7 @@ steps:
           privileged: true
           environment:
             - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux2
+            - BUILD_PKG_TARGET=x86_64-linux-kernel2
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
