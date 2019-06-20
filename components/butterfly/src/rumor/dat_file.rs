@@ -298,11 +298,7 @@ impl DatFileWriter {
               W: Write
     {
         let mut total = 0;
-        for member in store.list
-                           .read()
-                           .expect("Rumor store lock poisoned")
-                           .values()
-        {
+        for member in store.list.read().values() {
             for rumor in member.values() {
                 total += self.write_rumor(writer, rumor)?;
             }
