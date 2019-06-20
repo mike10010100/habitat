@@ -17,7 +17,7 @@ steps:
 # Release!
 #######################################################################
 
-  # TODO If you add quotes around the target currently breaks a bash case statement :/
+  TODO If you add quotes around the target currently breaks a bash case statement :/
   - label: "[:linux: build hab]"
     command:
       - .expeditor/scripts/build_component.sh hab
@@ -44,18 +44,19 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
-  # - label: "[:windows: build hab]"
-  #   command:
-  #     - .expeditor/scripts/build_component.sh hab
-  #   expeditor:
-  #     executor:
-  #       docker:
-  #         privileged: true
-  #         environment:
-  #           - HAB_ORIGIN
-  #           - BUILD_PKG_TARGET=x86_64-linux2
-  #           - ACCEPTANCE_HAB_AUTH_TOKEN
-  #           - ACCEPTANCE_HAB_BLDR_URL
+  - label: "[:windows: build hab]"
+    soft_fail: true
+    command:
+      - .expeditor/scripts/build_component.sh hab
+    expeditor:
+      executor:
+        docker:
+          privileged: true
+          environment:
+            - HAB_ORIGIN
+            - BUILD_PKG_TARGET=x86_64-windows
+            - ACCEPTANCE_HAB_AUTH_TOKEN
+            - ACCEPTANCE_HAB_BLDR_URL
             
   - wait
   
@@ -277,74 +278,9 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
-  - label: "[:linux: :two: build hab-pkg-aci]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-aci
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-
-  - label: "[:linux: :two: build hab-pkg-export-docker]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-export-docker
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-
-  - label: "[:linux: :two: build hab-pkg-export-kubernetes]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-export-kubernetes
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-
-  - label: "[:linux: :two: build hab-pkg-export-helm]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-export-helm
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-
   - label: "[:linux: :two: build hab-pkg-export-tar]"
     command:
       - .expeditor/scripts/build_component.sh pkg-export-tar
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-
-  - label: "[:linux: :two: build hab-pkg-mesosize]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-mesosize
     expeditor:
       executor:
         docker:
@@ -369,19 +305,6 @@ steps:
           environment:
             - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-
-  - label: "[:linux: :two: build hab-pkg-cfize]"
-    command:
-      - .expeditor/scripts/build_component.sh pkg-cfize
-    expeditor:
-      executor:
-        docker:
-          privileged: true
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux-kernel2
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
