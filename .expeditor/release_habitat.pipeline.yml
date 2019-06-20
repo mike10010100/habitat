@@ -17,7 +17,7 @@ steps:
 # Release!
 #######################################################################
 
-  TODO If you add quotes around the target currently breaks a bash case statement :/
+  # TODO If you add quotes around the target currently breaks a bash case statement :/
   - label: "[:linux: build hab]"
     command:
       - .expeditor/scripts/build_component.sh hab
