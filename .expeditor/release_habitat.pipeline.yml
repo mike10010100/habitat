@@ -52,7 +52,6 @@ steps:
       executor:
         docker:
           host_os: windows
-          privileged: true
           shell: [ "powershell", "-Command" ]
           environment:
             - HAB_ORIGIN
