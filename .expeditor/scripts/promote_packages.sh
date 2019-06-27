@@ -27,6 +27,9 @@ target_channel=${1}
 # e.g. `DEV`, `ACCEPTANCE`, `CURRENT`, etc
 destination_channel=${2}
 
+# Verify we're setting the variable for package target
+export HAB_PACKAGE_TARGET=$BUILD_PKG_TARGET
+
 # TODO - should we clear the destination channel before promoting?
 
 echo "--- Promoting from $target_channel to $destination_channel"
