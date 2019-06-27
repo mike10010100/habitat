@@ -51,8 +51,8 @@ steps:
     expeditor:
       executor:
         docker:
+          host_os: windows
           privileged: true
-          image: chefes/buildkite-windows
           shell: [ "powershell", "-Command" ]
           environment:
             - HAB_ORIGIN
