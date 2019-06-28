@@ -48,7 +48,7 @@ for pkg in "${packages_to_promote[@]}"; do
                     jq -r '.target')
 
   if [ "$found_pkg_target" = "$HAB_PACKAGE_TARGET" ]; then
-    echo "--- Package target is: ${found_pkg_target} - promoting to ${destination_channel}"
+    echo "--- Package target of ${pkg} is: ${found_pkg_target} - promoting to ${destination_channel}"
     # TODO: Set hab binary here correctly
     hab pkg promote --auth="${HAB_AUTH_TOKEN}" "${pkg}" "${destination_channel}" "${BUILD_PKG_TARGET}"
   else
