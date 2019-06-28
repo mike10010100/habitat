@@ -34,7 +34,7 @@ export HAB_PACKAGE_TARGET=$BUILD_PKG_TARGET
 
 echo "--- Promoting from $target_channel to $destination_channel"
 
-channel_pkgs_json=$(curl "${ACCEPTANCE_HAB_BLDR_URL}/v1/depot/channels/${HAB_ORIGIN}/${target_channel}/pkgs")
+channel_pkgs_json=$(curl -s "${ACCEPTANCE_HAB_BLDR_URL}/v1/depot/channels/${HAB_ORIGIN}/${target_channel}/pkgs")
 
 mapfile -t packages_to_promote < <(echo "${channel_pkgs_json}" | \
                          jq -r \
@@ -43,7 +43,15 @@ mapfile -t packages_to_promote < <(echo "${channel_pkgs_json}" | \
                          | .[]')
 
 for pkg in "${packages_to_promote[@]}"; do
-    echo "--- :habicat: Promoting '$pkg' to '$destination_channel'"
+  echo "Do we promote $pkg?"
+  found_pkg_target=$(curl -s "${ACCEPTANCE_HAB_BLDR_URL}/v1/depot/pkgs/${pkg}" | \
+                    jq -r '.target')
+
+  if [ "$found_pkg_target" = "$HAB_PACKAGE_TARGET" ]; then
+    echo "--- Package target is: ${found_pkg_target} - promoting to ${destination_channel}"
     # TODO: Set hab binary here correctly
     hab pkg promote --auth="${HAB_AUTH_TOKEN}" "${pkg}" "${destination_channel}" "${BUILD_PKG_TARGET}"
+  else
+    echo "--- Package target is: ${found_pkg_target} - NOT promoting"
+  fi
 done
