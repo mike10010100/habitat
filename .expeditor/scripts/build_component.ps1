@@ -17,7 +17,7 @@ if($Component.Equals("")) {
 }
 
 # because env inject
-$Env:HAB_AUTH_TOKEN=$Env:SCOTTHAIN_HAB_AUTH_TOKEN
+# $Env:HAB_AUTH_TOKEN=$Env:SCOTTHAIN_HAB_AUTH_TOKEN
 $Env:HAB_BLDR_URL=$Env:ACCEPTANCE_HAB_BLDR_URL
 
 # TODO: setup shared component in a more idomatic way

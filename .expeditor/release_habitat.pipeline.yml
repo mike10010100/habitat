@@ -64,8 +64,8 @@ steps:
         image: "chefes/buildkite-windows"
         shell: [ "powershell", "-Command" ]
         always-pull: true
-        propagate-environment: true
-
+        environment:
+          - HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
   - wait
 
   - label: "[:linux: build hab-plan-build]"
