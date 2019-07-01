@@ -16,6 +16,11 @@ if($Component.Equals("")) {
     Write-Error "--- :error: Component to build not specified, please use the -Component flag"
 }
 
+# install buildkite agent because we are in a container :(
+Write-Host "--- Installing buildkite agent in container"
+$Env:buildkiteAgentToken = $Env:BUILDKITE_AGENT_ACCESS_TOKEN
+Invoke-Expression (Invoke-WebRequest https://raw.githubusercontent.com/buildkite/agent/master/install.ps1 -UseBasicParsing).Content
+
 $Env:HAB_AUTH_TOKEN=$Env:ACCEPTANCE_HAB_AUTH_TOKEN
 $Env:HAB_BLDR_URL=$Env:ACCEPTANCE_HAB_BLDR_URL
 $Env:HAB_PACKAGE_TARGET=$Env:BUILD_PKG_TARGET
