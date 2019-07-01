@@ -45,14 +45,12 @@ steps:
             - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:windows: build hab]"
-    soft_fail: true
     command:
       - .expeditor/scripts/build_component.ps1 hab
     expeditor:
       executor:
         docker:
           host_os: windows
-          shell: [ "powershell", "-Command" ]
           environment:
             - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-windows
