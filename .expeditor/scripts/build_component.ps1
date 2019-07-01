@@ -64,6 +64,7 @@ $baseHabExe = (Get-Item "$bootstrapDir\hab-$targetVersion-x86_64-windows\hab.exe
 
 #### UGH WHY DID I HAVE TO DO THAT
 
+Invoke-Expression "$baseHabExe license accept" -ErrorAction Stop
 
 
 # # TODO: make this better
