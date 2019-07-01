@@ -19,11 +19,10 @@ if($Component.Equals("")) {
 $Env:HAB_AUTH_TOKEN=$Env:ACCEPTANCE_HAB_AUTH_TOKEN
 $Env:HAB_BLDR_URL=$Env:ACCEPTANCE_HAB_BLDR_URL
 
-Write-Host "THING: $Env:ACCEPTANCE_HAB_BLDR_URL"
-exit 1
-
 # TODO: setup shared component in a more idomatic way
 $Channel = "habitat-release-$Env:BUILDKITE_BUILD_ID"
+
+Write-Host "Channel: $Channel - bldr url: $Env:HAB_BLDR_URL"
 
 # TODO: do this better
 # Get the latest version available from bintray
@@ -70,9 +69,8 @@ $baseHabExe = (Get-Item "$bootstrapDir\hab-$targetVersion-x86_64-windows\hab.exe
 # # TODO: make this better
 Write-Host "--- :key: Downloading 'core' public keys from Builder"
 Invoke-Expression "$baseHabExe origin key download core" -ErrorAction Stop
-$hab_auth_token = (Get-ChildItem Env:HAB_AUTH_TOKEN).Value
 Write-Host "--- :closed_lock_with_key: Downloading latest 'core' secret key from Builder"
-Invoke-Expression "$baseHabExe origin key download core --auth $hab_auth_token --secret" -ErrorAction Stop
+Invoke-Expression "$baseHabExe origin key download core --auth $Env:HAB_AUTH_TOKEN --secret" -ErrorAction Stop
 $Env:HAB_CACHE_KEY_PATH = "C:\hab\cache\keys"
 $Env:HAB_ORIGIN = "core"
 
