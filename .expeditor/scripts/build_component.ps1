@@ -20,11 +20,10 @@ $Env:HAB_AUTH_TOKEN=$Env:ACCEPTANCE_HAB_AUTH_TOKEN
 $Env:HAB_BLDR_URL=$Env:ACCEPTANCE_HAB_BLDR_URL
 $Env:HAB_PACKAGE_TARGET=$Env:BUILD_PKG_TARGET
 
-
 # TODO: setup shared component in a more idomatic way
 $Channel = "habitat-release-$Env:BUILDKITE_BUILD_ID"
 
-Write-Host "Channel: $Channel - bldr url: $Env:HAB_BLDR_URL - and $Env:HAB_PACKAGE_TARGET - and $Env:HAB_AUTH_TOKEN"
+Write-Host "Channel: $Channel - bldr url: $Env:HAB_BLDR_URL" # - and $Env:HAB_PACKAGE_TARGET - and $Env:HAB_AUTH_TOKEN"
 
 # TODO: do this better
 # Get the latest version available from bintray
@@ -67,12 +66,11 @@ $baseHabExe = (Get-Item "$bootstrapDir\hab-$targetVersion-x86_64-windows\hab.exe
 # Accept license
 Invoke-Expression "$baseHabExe license accept"
 
-
 # Get keys
 Write-Host "--- :key: Downloading 'core' public keys from Builder"
 Invoke-Expression "$baseHabExe origin key download core"
 Write-Host "--- :closed_lock_with_key: Downloading latest 'core' secret key from Builder"
-Invoke-Expression "$baseHabExe origin key download core --auth $Env:HAB_AUTH_TOKEN --secret" -ErrorAction Stop
+Invoke-Expression "$baseHabExe origin key download core --auth $Env:HAB_AUTH_TOKEN --secret"
 $Env:HAB_CACHE_KEY_PATH = "C:\hab\cache\keys"
 $Env:HAB_ORIGIN = "core"
 
