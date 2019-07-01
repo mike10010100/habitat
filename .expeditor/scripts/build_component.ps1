@@ -20,10 +20,11 @@ $Env:HAB_AUTH_TOKEN=$Env:ACCEPTANCE_HAB_AUTH_TOKEN
 $Env:HAB_BLDR_URL=$Env:ACCEPTANCE_HAB_BLDR_URL
 $Env:HAB_PACKAGE_TARGET=$Env:BUILD_PKG_TARGET
 
+
 # TODO: setup shared component in a more idomatic way
 $Channel = "habitat-release-$Env:BUILDKITE_BUILD_ID"
 
-Write-Host "Channel: $Channel - bldr url: $Env:HAB_BLDR_URL"
+Write-Host "Channel: $Channel - bldr url: $Env:HAB_BLDR_URL - and $Env:HAB_PACKAGE_TARGET - and $Env:HAB_AUTH_TOKEN"
 
 # TODO: do this better
 # Get the latest version available from bintray

@@ -68,6 +68,7 @@ steps:
           - HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
           - ACCEPTANCE_HAB_BLDR_URL
           - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_BUILD_ID
 
   - wait
 
