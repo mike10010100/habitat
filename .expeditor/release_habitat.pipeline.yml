@@ -47,15 +47,23 @@ steps:
   - label: "[:windows: build hab]"
     command:
       - .expeditor/scripts/build_component.ps1 hab
-    expeditor:
-      executor:
-        docker:
-          host_os: windows
-          environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-windows
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+    # expeditor:
+    #   executor:
+    #     docker:
+    #       host_os: windows
+    #       environment:
+    #         - HAB_ORIGIN
+    #         - BUILD_PKG_TARGET=x86_64-windows
+    #         - ACCEPTANCE_HAB_AUTH_TOKEN
+    #         - ACCEPTANCE_HAB_BLDR_URL
+    agents:
+      queue: 'default-windows-privileged'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        always-pull: true
+        propagate-environment: true
 
   - wait
 
