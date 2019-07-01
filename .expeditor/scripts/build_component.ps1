@@ -10,7 +10,7 @@ param (
 $ErrorActionPreference="stop" 
 
 # Import shared functions
-. "$PSScriptRoot\shared.ps1"
+. ".buildkite\scripts\shared.ps1"
 
 if($Component.Equals("")) {
     Write-Error "--- :error: Component to build not specified, please use the -Component flag"
@@ -27,18 +27,18 @@ $Channel = "habitat-release-$Env:BUILDKITE_BUILD_ID"
 $current_protocols = [Net.ServicePointManager]::SecurityProtocol
 $latestVersionURI = ""
 $downloadUrl = ""
-# try {
-#     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-#     $response = Invoke-WebRequest "https://bintray.com/habitat/stable/hab-x86_64-windows/_latestVersion" -UseBasicParsing -ErrorAction Stop
-#     $latestVersionURI = ($response).BaseResponse.ResponseUri.AbsoluteUri
-# }
-# finally {
-#     [Net.ServicePointManager]::SecurityProtocol = $current_protocols
-# }
+try {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    $response = Invoke-WebRequest "https://bintray.com/habitat/stable/hab-x86_64-windows/_latestVersion" -UseBasicParsing -ErrorAction Stop
+    $latestVersionURI = ($response).BaseResponse.ResponseUri.AbsoluteUri
+}
+finally {
+    [Net.ServicePointManager]::SecurityProtocol = $current_protocols
+}
   
-# $uriArray = $latestVersionURI.Split("/")
-# $targetVersion = $uriArray[$uriArray.Length-1]
-# Write-Host "--- Latest version is $targetVersion"
+$uriArray = $latestVersionURI.Split("/")
+$targetVersion = $uriArray[$uriArray.Length-1]
+Write-Host "--- Latest version is $targetVersion"
 # $downloadUrl = "https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-$targetVersion-x86_64-windows.zip?bt_package=hab-x86_64-windows"
 # }
 # $bootstrapDir = "C:\hab-latest"
