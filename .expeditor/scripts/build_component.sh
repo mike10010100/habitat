@@ -66,9 +66,9 @@ ${hab_binary} pkg upload \
               --auth="${HAB_AUTH_TOKEN}" \
               "results/${pkg_artifact}"
 
-${hab_binary} pkg promote \
-              --auth="${HAB_AUTH_TOKEN}" \
-              "${pkg_ident}" "${channel}" "${pkg_target}"
+# ${hab_binary} pkg promote \
+#               --auth="${HAB_AUTH_TOKEN}" \
+#               "${pkg_ident}" "${channel}" "${pkg_target}"
 
 # echo "--- :partyparrot: Manually uploading '${pkg_ident:?}' (${pkg_target}) to Builder"
 # curl --request POST \

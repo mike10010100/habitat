@@ -16,9 +16,8 @@ if($Component.Equals("")) {
     Write-Error "--- :error: Component to build not specified, please use the -Component flag"
 }
 
-# because env inject
-# $Env:HAB_AUTH_TOKEN=$Env:SCOTTHAIN_HAB_AUTH_TOKEN
 $Env:HAB_BLDR_URL=$Env:ACCEPTANCE_HAB_BLDR_URL
+$Env:HAB_PACKAGE_TARGET=$Env:BUILD_PKG_TARGET
 
 # TODO: setup shared component in a more idomatic way
 $Channel = "habitat-release-$Env:BUILDKITE_BUILD_ID"
@@ -63,12 +62,11 @@ Expand-Archive -Path hab.zip -DestinationPath $bootstrapDir -ErrorAction Stop
 Remove-Item hab.zip -Force
 $baseHabExe = (Get-Item "$bootstrapDir\hab-$targetVersion-x86_64-windows\hab.exe").FullName
 
-#### UGH WHY DID I HAVE TO DO THAT
-
+# Accept license
 Invoke-Expression "$baseHabExe license accept" -ErrorAction Stop
 
 
-# # TODO: make this better
+# Get keys
 Write-Host "--- :key: Downloading 'core' public keys from Builder"
 Invoke-Expression "$baseHabExe origin key download core" -ErrorAction Stop
 Write-Host "--- :closed_lock_with_key: Downloading latest 'core' secret key from Builder"
@@ -79,54 +77,32 @@ $Env:HAB_ORIGIN = "core"
 
 
 
-# ##### NOW WE DO MORE THINGS WHY OH GOD WHY
 
+# Write a build!
+Push-Location "C:\build"
+    Write-Host "--- Setting HAB_BLDR_CHANNEL channel to $Channel"
+    # $Env:HAB_BLDR_CHANNEL="$Channel"
+    Write-Host "--- Running hab pkg build for $Component"
+    Invoke-Expression "$baseHabExe pkg build components\$Component --keys core"
+    . "results\last_build.ps1"
 
+    Write-Host "Running hab pkg upload for $Component to channel $Channel"
+    Invoke-Expression "$baseHabExe pkg upload results\$pkg_artifact --channel=$Channel $Env:HAB_PACKAGE_TARGET"
+    Invoke-Expression "buildkite-agent meta-data set ${pkg_ident}-x86_64-windows true"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# # Write a build!
-# Push-Location "C:\build"
-#     Write-Host "--- Setting HAB_BLDR_CHANNEL channel to $ReleaseChannel"
-#     $Env:HAB_BLDR_CHANNEL="$ReleaseChannel"
-#     Write-Host "--- Running hab pkg build for $Component"
-#     Invoke-Expression "$baseHabExe pkg build components\$Component --keys core"
-#     . "results\last_build.ps1"
-
-#     Write-Host "Running hab pkg upload for $Component to channel $ReleaseChannel"
-#     Invoke-Expression "$baseHabExe pkg upload results\$pkg_artifact --channel=$ReleaseChannel"
-#     Invoke-Expression "buildkite-agent meta-data set ${pkg_ident}-x86_64-windows true"
-
-
-
-#     If ($Component -eq 'hab') {
-#         Write-Host "--- :buildkite: Recording metadata $pkg_ident"
-#         Invoke-Expression "buildkite-agent meta-data set 'hab-version-x86_64-windows' '$pkg_ident'"
-#         Invoke-Expression "buildkite-agent meta-data set 'hab-release-x86_64-windows' '$pkg_release'"
-#         Invoke-Expression "buildkite-agent meta-data set 'hab-artifact-x86_64-windows' '$pkg_artifact'"
-#     } Elseif ($component -eq 'studio') {
-#         Write-Host "--- :buildkite: Recording metadata for $pkg_ident"
-#         Invoke-Expression "buildkite-agent meta-data set 'studio-version-x86_64-windows' $pkg_ident"       
-#     } Else {
-#         Write-Host "Not recording any metadata for $pkg_ident, none required."
-#     }
-#     Invoke-Expression "buildkite-agent annotate --append --context 'release-manifest' '<br>* ${pkg_ident} (x86_64-windows)'"
-# Pop-Location
+    # If ($Component -eq 'hab') {
+    #     Write-Host "--- :buildkite: Recording metadata $pkg_ident"
+    #     Invoke-Expression "buildkite-agent meta-data set 'hab-version-x86_64-windows' '$pkg_ident'"
+    #     Invoke-Expression "buildkite-agent meta-data set 'hab-release-x86_64-windows' '$pkg_release'"
+    #     Invoke-Expression "buildkite-agent meta-data set 'hab-artifact-x86_64-windows' '$pkg_artifact'"
+    # } Elseif ($component -eq 'studio') {
+    #     Write-Host "--- :buildkite: Recording metadata for $pkg_ident"
+    #     Invoke-Expression "buildkite-agent meta-data set 'studio-version-x86_64-windows' $pkg_ident"       
+    # } Else {
+    #     Write-Host "Not recording any metadata for $pkg_ident, none required."
+    # }
+    # Invoke-Expression "buildkite-agent annotate --append --context 'release-manifest' '<br>* ${pkg_ident} (x86_64-windows)'"
+Pop-Location
 
 exit 1
 # exit $LASTEXITCODE
