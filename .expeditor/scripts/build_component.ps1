@@ -64,13 +64,12 @@ $baseHabExe = (Get-Item "$bootstrapDir\hab-$targetVersion-x86_64-windows\hab.exe
 
 
 
-
 # # TODO: make this better
 Write-Host "--- :key: Downloading 'core' public keys from Builder"
-Invoke-Expression "$HabExe origin key download core" -ErrorAction Stop
+Invoke-Expression "$baseHabExe origin key download core" -ErrorAction Stop
 $hab_auth_token = (Get-ChildItem Env:HAB_AUTH_TOKEN).Value
 Write-Host "--- :closed_lock_with_key: Downloading latest 'core' secret key from Builder"
-Invoke-Expression "$HabExe origin key download core --auth $hab_auth_token --secret" -ErrorAction Stop
+Invoke-Expression "$baseHabExe origin key download core --auth $hab_auth_token --secret" -ErrorAction Stop
 $Env:HAB_CACHE_KEY_PATH = "C:\hab\cache\keys"
 $Env:HAB_ORIGIN = "core"
 
