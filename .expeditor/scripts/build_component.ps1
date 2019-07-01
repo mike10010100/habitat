@@ -19,6 +19,9 @@ if($Component.Equals("")) {
 $Env:HAB_AUTH_TOKEN=$Env:ACCEPTANCE_HAB_AUTH_TOKEN
 $Env:HAB_BLDR_URL=$Env:ACCEPTANCE_HAB_BLDR_URL
 
+Write-Host "THING: $Env:ACCEPTANCE_HAB_BLDR_URL"
+exit 1
+
 # TODO: setup shared component in a more idomatic way
 $Channel = "habitat-release-$Env:BUILDKITE_BUILD_ID"
 
