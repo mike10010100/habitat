@@ -64,6 +64,7 @@ steps:
         image: "chefes/buildkite-windows"
         shell: [ "powershell", "-Command" ]
         always-pull: true
+        mount-buildkite-agent: true
         environment:
           - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
           - ACCEPTANCE_HAB_BLDR_URL

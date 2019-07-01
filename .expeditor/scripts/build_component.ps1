@@ -23,7 +23,7 @@ $Env:HAB_PACKAGE_TARGET=$Env:BUILD_PKG_TARGET
 # TODO: setup shared component in a more idomatic way
 $Channel = "habitat-release-$Env:BUILDKITE_BUILD_ID"
 
-Write-Host "Channel: $Channel - bldr url: $Env:HAB_BLDR_URL" # - and $Env:HAB_PACKAGE_TARGET - and $Env:HAB_AUTH_TOKEN"
+Write-Host "Channel: $Channel - bldr url: $Env:HAB_BLDR_URL"
 
 # TODO: do this better
 # Get the latest version available from bintray
@@ -74,13 +74,9 @@ Invoke-Expression "$baseHabExe origin key download core --auth $Env:HAB_AUTH_TOK
 $Env:HAB_CACHE_KEY_PATH = "C:\hab\cache\keys"
 $Env:HAB_ORIGIN = "core"
 
-
-
-
-
 # Write a build!
 Write-Host "--- Setting HAB_BLDR_CHANNEL channel to $Channel"
-# $Env:HAB_BLDR_CHANNEL="$Channel"
+$Env:HAB_BLDR_CHANNEL="$Channel"
 Write-Host "--- Running hab pkg build for $Component"
 Invoke-Expression "$baseHabExe pkg build components\$Component --keys core"
 . "results\last_build.ps1"
@@ -89,18 +85,17 @@ Write-Host "Running hab pkg upload for $Component to channel $Channel"
 Invoke-Expression "$baseHabExe pkg upload results\$pkg_artifact --channel=$Channel $Env:HAB_PACKAGE_TARGET"
 Invoke-Expression "buildkite-agent meta-data set ${pkg_ident}-x86_64-windows true"
 
-# If ($Component -eq 'hab') {
-#     Write-Host "--- :buildkite: Recording metadata $pkg_ident"
-#     Invoke-Expression "buildkite-agent meta-data set 'hab-version-x86_64-windows' '$pkg_ident'"
-#     Invoke-Expression "buildkite-agent meta-data set 'hab-release-x86_64-windows' '$pkg_release'"
-#     Invoke-Expression "buildkite-agent meta-data set 'hab-artifact-x86_64-windows' '$pkg_artifact'"
-# } Elseif ($component -eq 'studio') {
-#     Write-Host "--- :buildkite: Recording metadata for $pkg_ident"
-#     Invoke-Expression "buildkite-agent meta-data set 'studio-version-x86_64-windows' $pkg_ident"       
-# } Else {
-#     Write-Host "Not recording any metadata for $pkg_ident, none required."
-# }
-# Invoke-Expression "buildkite-agent annotate --append --context 'release-manifest' '<br>* ${pkg_ident} (x86_64-windows)'"
+If ($Component -eq 'hab') {
+    Write-Host "--- :buildkite: Recording metadata $pkg_ident"
+    Invoke-Expression "buildkite-agent meta-data set 'hab-version-x86_64-windows' '$pkg_ident'"
+    Invoke-Expression "buildkite-agent meta-data set 'hab-release-x86_64-windows' '$pkg_release'"
+    Invoke-Expression "buildkite-agent meta-data set 'hab-artifact-x86_64-windows' '$pkg_artifact'"
+} Elseif ($component -eq 'studio') {
+    Write-Host "--- :buildkite: Recording metadata for $pkg_ident"
+    Invoke-Expression "buildkite-agent meta-data set 'studio-version-x86_64-windows' $pkg_ident"       
+} Else {
+    Write-Host "Not recording any metadata for $pkg_ident, none required."
+}
+Invoke-Expression "buildkite-agent annotate --append --context 'release-manifest' '<br>* ${pkg_ident} (x86_64-windows)'"
 
-exit 1
-# exit $LASTEXITCODE
+exit $LASTEXITCODE
