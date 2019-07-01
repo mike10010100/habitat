@@ -39,25 +39,25 @@ finally {
 $uriArray = $latestVersionURI.Split("/")
 $targetVersion = $uriArray[$uriArray.Length-1]
 Write-Host "--- Latest version is $targetVersion"
-# $downloadUrl = "https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-$targetVersion-x86_64-windows.zip?bt_package=hab-x86_64-windows"
+$downloadUrl = "https://api.bintray.com/content/habitat/stable/windows/x86_64/hab-$targetVersion-x86_64-windows.zip?bt_package=hab-x86_64-windows"
 # }
-# $bootstrapDir = "C:\hab-latest"
+$bootstrapDir = "C:\hab-latest"
 
-# # download a hab binary to build hab from source in a studio
-# Write-Host "--- Downloading from $downloadUrl"
-# $current_protocols = [Net.ServicePointManager]::SecurityProtocol
-# try {
-#   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-#   Invoke-WebRequest -UseBasicParsing -Uri "$downloadUrl" -OutFile hab.zip -ErrorAction Stop
-# }
-# finally {
-#   [Net.ServicePointManager]::SecurityProtocol = $current_protocols
-# }
-# Write-Host "--- Extracting to $bootstrapDir"
-# New-Item -ItemType directory -Path $bootstrapDir -Force -ErrorAction Stop
-# Expand-Archive -Path hab.zip -DestinationPath $bootstrapDir -ErrorAction Stop
-# Remove-Item hab.zip -Force
-# $baseHabExe = (Get-Item "$bootstrapDir\hab-$targetVersion-x86_64-windows\hab.exe").FullName
+# download a hab binary to build hab from source in a studio
+Write-Host "--- Downloading from $downloadUrl"
+$current_protocols = [Net.ServicePointManager]::SecurityProtocol
+try {
+  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+  Invoke-WebRequest -UseBasicParsing -Uri "$downloadUrl" -OutFile hab.zip -ErrorAction Stop
+}
+finally {
+  [Net.ServicePointManager]::SecurityProtocol = $current_protocols
+}
+Write-Host "--- Extracting to $bootstrapDir"
+New-Item -ItemType directory -Path $bootstrapDir -Force -ErrorAction Stop
+Expand-Archive -Path hab.zip -DestinationPath $bootstrapDir -ErrorAction Stop
+Remove-Item hab.zip -Force
+$baseHabExe = (Get-Item "$bootstrapDir\hab-$targetVersion-x86_64-windows\hab.exe").FullName
 
 # #### UGH WHY DID I HAVE TO DO THAT
 
