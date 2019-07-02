@@ -25,12 +25,10 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
-
+  
   - label: "[:linux: :two: build hab]"
     command:
       - .expeditor/scripts/build_component.sh hab
@@ -38,11 +36,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
-            - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+            - BUILD_PKG_TARGET=x86_64-linux
 
     # Until we can use the expeditor executors
   - label: "[:windows: build hab]"
@@ -67,9 +63,7 @@ steps:
         always-pull: true
         environment:
           - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
-          # - ACCEPTANCE_HAB_BLDR_URL
           - BUILD_PKG_TARGET=x86_64-windows
-        #   - BUILDKITE_BUILD_ID
           - BUILDKITE_AGENT_ACCESS_TOKEN
 
   - wait
