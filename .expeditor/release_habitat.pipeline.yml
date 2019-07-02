@@ -40,19 +40,10 @@ steps:
           environment:
             - BUILD_PKG_TARGET=x86_64-linux
 
-    # Until we can use the expeditor executors
+  # Until we can use the expeditor executors
   - label: "[:windows: build hab]"
     command:
       - .expeditor/scripts/build_component.ps1 hab
-    # expeditor:
-    #   executor:
-    #     docker:
-    #       host_os: windows
-    #       environment:
-    #         - HAB_ORIGIN
-    #         - BUILD_PKG_TARGET=x86_64-windows
-    #         - ACCEPTANCE_HAB_AUTH_TOKEN
-    #         - ACCEPTANCE_HAB_BLDR_URL
     agents:
       queue: 'default-windows'
     plugins:
@@ -94,6 +85,23 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
+  # Until we can use the expeditor executors
+  - label: "[:windows: build plan-build-ps1]"
+    command:
+      - .expeditor/scripts/build_component.ps1 plan-build-ps1
+    agents:
+      queue: 'default-windows'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        propagate-environment: true
+        always-pull: true
+        environment:
+          - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+          - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_AGENT_ACCESS_TOKEN
+
   - wait
 
   - label: "[:linux: build hab-backline]"
@@ -121,6 +129,23 @@ steps:
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
+
+  # Until we can use the expeditor executors
+  - label: "[:windows: build hab-backline]"
+    command:
+      - .expeditor/scripts/build_component.ps1 hab-backline
+    agents:
+      queue: 'default-windows'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        propagate-environment: true
+        always-pull: true
+        environment:
+          - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+          - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_AGENT_ACCESS_TOKEN
 
   - wait
 
@@ -150,6 +175,23 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
+  # Until we can use the expeditor executors
+  - label: "[:windows: build studio]"
+    command:
+      - .expeditor/scripts/build_component.ps1 studio
+    agents:
+      queue: 'default-windows'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        propagate-environment: true
+        always-pull: true
+        environment:
+          - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+          - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_AGENT_ACCESS_TOKEN
+
   - wait
 
   - label: "[:linux: build launcher]"
@@ -177,6 +219,23 @@ steps:
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
+
+  # Until we can use the expeditor executors
+  - label: "[:windows: build launcher]"
+    command:
+      - .expeditor/scripts/build_component.ps1 launcher
+    agents:
+      queue: 'default-windows'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        propagate-environment: true
+        always-pull: true
+        environment:
+          - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+          - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_AGENT_ACCESS_TOKEN
 
   - wait
 
@@ -206,6 +265,23 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
+  # Until we can use the expeditor executors
+  - label: "[:windows: build hab-sup]"
+    command:
+      - .expeditor/scripts/build_component.ps1 sup
+    agents:
+      queue: 'default-windows'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        propagate-environment: true
+        always-pull: true
+        environment:
+          - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+          - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_AGENT_ACCESS_TOKEN
+
   - wait
 
   - label: "[:linux: build hab-pkg-aci]"
@@ -233,6 +309,23 @@ steps:
             - BUILD_PKG_TARGET=x86_64-linux
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
+
+  # Until we can use the expeditor executors
+  - label: "[:windows: build hab-pkg-export-docker]"
+    command:
+      - .expeditor/scripts/build_component.ps1 pkg-export-docker
+    agents:
+      queue: 'default-windows'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        propagate-environment: true
+        always-pull: true
+        environment:
+          - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+          - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_AGENT_ACCESS_TOKEN
 
   - label: "[:linux: build hab-pkg-export-kubernetes]"
     command:
@@ -272,6 +365,23 @@ steps:
             - BUILD_PKG_TARGET=x86_64-linux
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
+
+  # Until we can use the expeditor executors
+  - label: "[:windows: build hab-pkg-export-tar]"
+    command:
+      - .expeditor/scripts/build_component.ps1 pkg-export-tar
+    agents:
+      queue: 'default-windows'
+    plugins:
+      docker#v3.2.0:
+        image: "chefes/buildkite-windows"
+        shell: [ "powershell", "-Command" ]
+        propagate-environment: true
+        always-pull: true
+        environment:
+          - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+          - BUILD_PKG_TARGET=x86_64-windows
+          - BUILDKITE_AGENT_ACCESS_TOKEN
 
   - label: "[:linux: build hab-pkg-mesosize]"
     command:
@@ -332,7 +442,7 @@ steps:
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
 
-  - label: "[:linux: promote to dev]"
+  - label: "[:linux: :two: promote to dev]"
     command:
       - .expeditor/scripts/promote_packages.sh habitat-release-$BUILDKITE_BUILD_ID DEV
     expeditor:
@@ -342,5 +452,18 @@ steps:
           environment:
             - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
+            - ACCEPTANCE_HAB_AUTH_TOKEN
+            - ACCEPTANCE_HAB_BLDR_URL
+
+  - label: "[:windows: promote to dev]"
+    command:
+      - .expeditor/scripts/promote_packages.sh habitat-release-$BUILDKITE_BUILD_ID DEV
+    expeditor:
+      executor:
+        docker:
+          privileged: true
+          environment:
+            - HAB_ORIGIN
+            - BUILD_PKG_TARGET=x86_64-windows
             - ACCEPTANCE_HAB_AUTH_TOKEN
             - ACCEPTANCE_HAB_BLDR_URL
