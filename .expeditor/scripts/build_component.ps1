@@ -86,9 +86,11 @@ Write-Host "--- Running hab pkg build for $Component"
 Invoke-Expression "$baseHabExe pkg build components\$Component --keys core"
 . "results\last_build.ps1"
 
-Write-Host "Running hab pkg upload for $Component to channel $Channel"
-Invoke-Expression "$baseHabExe pkg upload results\$pkg_artifact --channel=$Channel $Env:HAB_PACKAGE_TARGET"
-Invoke-Expression "buildkite-agent meta-data set ${pkg_ident}-x86_64-windows true"
+cat "results\last_build.ps1"
+
+Write-Host "Running hab pkg upload for $Component to channel $Channel - $Env:pkg_artifact - "
+Invoke-Expression "$baseHabExe pkg upload results\$Env:pkg_artifact --channel=$Channel $Env:HAB_PACKAGE_TARGET"
+Invoke-Expression "buildkite-agent meta-data set $pkg_ident-x86_64-windows true"
 
 If ($Component -eq 'hab') {
     Write-Host "--- :buildkite: Recording metadata $pkg_ident"
