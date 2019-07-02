@@ -84,12 +84,12 @@ Write-Host "--- Setting HAB_BLDR_CHANNEL channel to $Channel"
 $Env:HAB_BLDR_CHANNEL="$Channel"
 Write-Host "--- Running hab pkg build for $Component"
 Invoke-Expression "$baseHabExe pkg build components\$Component --keys core"
-. "results\last_build.ps1"
+. results\last_build.ps1
 
-cat "results\last_build.ps1"
+Write-Host "--- THING IS $pkg_artifact"
 
 Write-Host "Running hab pkg upload for $Component to channel $Channel - $Env:pkg_artifact - "
-Invoke-Expression "$baseHabExe pkg upload results\$Env:pkg_artifact --channel=$Channel $Env:HAB_PACKAGE_TARGET"
+Invoke-Expression "$baseHabExe pkg upload results\$pkg_artifact --channel=$Channel $Env:HAB_PACKAGE_TARGET"
 Invoke-Expression "buildkite-agent meta-data set $pkg_ident-x86_64-windows true"
 
 If ($Component -eq 'hab') {
