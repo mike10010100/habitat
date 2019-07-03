@@ -5,7 +5,7 @@
 # locally-built code, set overrides in the environment of the script.
 # See https://github.com/habitat-sh/habitat/blob/master/BUILDING.md#testing-changes
 
-set -exou pipefail
+set -eou pipefail
 
 if pgrep hab-launch &>/dev/null; then
 	echo "Error: launcher process is already running"
@@ -16,8 +16,6 @@ TESTING_FS_ROOT=$(mktemp -d)
 export TESTING_FS_ROOT
 export HAB_LAUNCH_SUP_CONNECT_TIMEOUT_SECS=2
 export HAB_FEAT_BOOT_FAIL=1
-export CI_OVERRIDE_CHANNEL="DEV"
-export HAB_BLDR_CHANNEL="DEV"
 sup_log=$(mktemp)
 
 echo -n "Starting launcher with root $TESTING_FS_ROOT (logging to $sup_log)..."

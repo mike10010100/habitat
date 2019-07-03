@@ -11,6 +11,7 @@ expeditor:
         ACCEPTANCE_HAB_BLDR_URL: "https://bldr.acceptance.habitat.sh"
         CI_OVERRIDE_CHANNEL: "DEV"
         HAB_BLDR_CHANNEL: "DEV"
+        HAB_INTERNAL_BLDR_CHANNEL: "DEV"
 
         # HAB_LICENSE: "accept-no-persist"
         # HAB_STUDIO_SECRET_HAB_LICENSE: "accept-no-persist"
