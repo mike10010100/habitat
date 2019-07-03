@@ -9,6 +9,9 @@ expeditor:
       env:
         HAB_ORIGIN: "core"
         ACCEPTANCE_HAB_BLDR_URL: "https://bldr.acceptance.habitat.sh"
+        CI_OVERRIDE_CHANNEL: "DEV"
+        HAB_BLDR_CHANNEL: "DEV"
+
         # HAB_LICENSE: "accept-no-persist"
         # HAB_STUDIO_SECRET_HAB_LICENSE: "accept-no-persist"
 
@@ -27,7 +30,6 @@ steps:
           privileged: true
           propagate-environment: true
           environment:
-            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
 
   - label: "[:linux: test_launcher_checks_supervisor_version]"
@@ -40,7 +42,6 @@ steps:
           privileged: true
           propagate-environment: true
           environment:
-            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
 
   - label: "[:linux: test_launcher_exits_on_supervisor_connection_failure]"
@@ -53,7 +54,6 @@ steps:
           privileged: true
           propagate-environment: true
           environment:
-            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
 
   - label: "[:linux: test_launcher_exits_on_supervisor_startup_failure]"
@@ -66,7 +66,6 @@ steps:
           privileged: true
           propagate-environment: true
           environment:
-            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
 
   - label: "[:linux: test_launcher_restarts_supervisor]"
@@ -79,7 +78,6 @@ steps:
           privileged: true
           propagate-environment: true
           environment:
-            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
 
   - label: "[:linux: test_socket_file_cleanup]"
@@ -92,7 +90,6 @@ steps:
           privileged: true
           propagate-environment: true
           environment:
-            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
 
   - label: "[:linux: test_tar_export]"
@@ -105,5 +102,4 @@ steps:
           privileged: true
           propagate-environment: true
           environment:
-            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
