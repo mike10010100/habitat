@@ -42,7 +42,7 @@ steps:
 
   - label: "[:windows: build hab]"
     command:
-      - powershell -Command ".expeditor/scripts/build_component.ps1 hab"
+      - .expeditor/scripts/build_component.ps1 hab
     expeditor:
       executor:
         docker:
