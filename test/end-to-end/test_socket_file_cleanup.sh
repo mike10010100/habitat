@@ -6,8 +6,6 @@ find_socket_files() {
 	find /tmp -maxdepth 1 -name "rust-ipc-socket.*"
 }
 
-echo "CI: ${CI_OVERRIDE_CHANNEL} - ${HAB_BLDR_CHANNEL}"
-
 export CI_OVERRIDE_CHANNEL="DEV"
 export HAB_BLDR_CHANNEL="DEV"
 
