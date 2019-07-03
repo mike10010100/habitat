@@ -48,7 +48,6 @@ steps:
         docker:
           host_os: windows
           propagate-environment: true
-          shell: [ "powershell", "-Command" ]
           always-pull: true
           environment:
             - BUILD_PKG_TARGET=x86_64-windows
