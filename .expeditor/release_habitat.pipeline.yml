@@ -40,21 +40,34 @@ steps:
           environment:
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
 
-  # Until we can use the expeditor executors
   - label: "[:windows: build hab]"
     command:
       - .expeditor/scripts/build_component.ps1 hab
-    agents:
-      queue: 'default-windows'
-    plugins:
-      docker#v3.2.0:
-        image: "chefes/buildkite-windows"
-        shell: [ "powershell", "-Command" ]
-        propagate-environment: true
-        always-pull: true
-        environment:
-          - BUILD_PKG_TARGET=x86_64-windows
-          - BUILDKITE_AGENT_ACCESS_TOKEN
+    expeditor:
+      executor:
+        docker:
+          os: windows
+          propagate-environment: true
+          environment:
+            - BUILD_PKG_TARGET=x86_64-windows
+            - BUILDKITE_AGENT_ACCESS_TOKEN
+
+  # Until we can use the expeditor executors
+  # - label: "[:windows: build hab]"
+  #   command:
+  #     - .expeditor/scripts/build_component.ps1 hab
+  #   agents:
+  #     queue: 'default-windows'
+  #   plugins:
+  #     docker#v3.2.0:
+  #       image: "chefes/buildkite-windows"
+  #       shell: [ "powershell", "-Command" ]
+  #       propagate-environment: true
+  #       always-pull: true
+  #       environment:
+  #         - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
+  #         - BUILD_PKG_TARGET=x86_64-windows
+  #         - BUILDKITE_AGENT_ACCESS_TOKEN
 
   - wait
 
