@@ -554,14 +554,14 @@ mod tests {
 
         assert!(!file_path.exists());
 
-        let result = DatFileReader::read_or_create_mlr(file_path.to_path_buf(),
-                                                       &MemberList::new(),
-                                                       &RumorStore::default(),
-                                                       &RumorStore::default(),
-                                                       &RumorStore::default(),
-                                                       &RumorStore::default(),
-                                                       &RumorStore::default(),
-                                                       &RumorStore::default());
+        let result = DatFileReader::read_or_create_mlr_rsr(file_path.to_path_buf(),
+                                                           &MemberList::new(),
+                                                           &RumorStore::default(),
+                                                           &RumorStore::default(),
+                                                           &RumorStore::default(),
+                                                           &RumorStore::default(),
+                                                           &RumorStore::default(),
+                                                           &RumorStore::default());
 
         assert!(result.is_ok(), "{}", result.unwrap_err());
         assert!(file_path.is_file());
