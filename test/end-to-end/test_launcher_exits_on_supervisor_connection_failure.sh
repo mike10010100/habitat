@@ -5,7 +5,7 @@
 # locally-built code, set overrides in the environment of the script.
 # See https://github.com/habitat-sh/habitat/blob/master/BUILDING.md#testing-changes
 
-set -eou pipefail
+set -exou pipefail
 
 if pgrep hab-launch &>/dev/null; then
 	echo "Error: launcher process is already running"

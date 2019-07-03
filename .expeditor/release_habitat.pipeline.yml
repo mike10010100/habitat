@@ -46,7 +46,7 @@ steps:
     expeditor:
       executor:
         docker:
-          os: windows
+          host_os: windows
           propagate-environment: true
           shell: [ "powershell", "-Command" ]
           always-pull: true
