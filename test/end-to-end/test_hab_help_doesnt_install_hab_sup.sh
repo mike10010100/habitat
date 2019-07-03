@@ -36,7 +36,7 @@ fi
 
 echo "--- Running \`$HAB_BINARY sup --help\` - which should NOT attempt an install of core/hab-sup"
 
-hab_bin_run = "$($HAB_BINARY sup --help)"
+hab_bin_run="$($HAB_BINARY sup --help)"
 echo "--- $hab_bin_run"
 
 if [ -z $hab_bin_run ]; then
