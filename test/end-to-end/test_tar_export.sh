@@ -34,7 +34,7 @@ fi
 # Remove tarball if already present
 rm -f ./*.tar.gz
 
-hab pkg export tar "$pkg_ident" 
+hab pkg export tar "$pkg_ident" --base-pkgs-channel=DEV
 
 # Check if tarball is present
 
