@@ -39,7 +39,7 @@ echo "--- Running \`$HAB_BINARY sup --help\` - which should NOT attempt an insta
 hab_bin_run="$($HAB_BINARY sup --help)"
 echo "--- $hab_bin_run"
 
-if [ -z $hab_bin_run ]; then
+if [ -z "$hab_bin_run" ]; then
   echo
   echo "--- ERROR: $HAB_BINARY was not the proper executable hab binary!"
   exit 1
