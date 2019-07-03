@@ -25,12 +25,10 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: test_launcher_checks_supervisor_version]"
     command:
@@ -40,12 +38,10 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: test_launcher_exits_on_supervisor_connection_failure]"
     command:
@@ -55,11 +51,10 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
+            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: test_launcher_exits_on_supervisor_startup_failure]"
     command:
@@ -69,11 +64,10 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
+            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: test_launcher_restarts_supervisor]"
     command:
@@ -83,11 +77,10 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
+            - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: test_socket_file_cleanup]"
     command:
@@ -97,12 +90,10 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: test_tar_export]"
     command:
@@ -112,9 +103,7 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - HAB_BLDR_CHANNEL=DEV
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL

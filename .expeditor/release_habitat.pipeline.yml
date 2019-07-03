@@ -66,11 +66,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: build hab-plan-build]"
     command:
@@ -79,11 +77,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   # Until we can use the expeditor executors
   - label: "[:windows: build plan-build-ps1]"
@@ -111,11 +107,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: build hab-backline]"
     command:
@@ -124,11 +118,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - wait
 
@@ -139,11 +131,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: build hab-studio]"
     command:
@@ -152,11 +142,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   # Until we can use the expeditor executors
   - label: "[:windows: build studio]"
@@ -184,11 +172,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: build launcher]"
     command:
@@ -197,11 +183,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   # Until we can use the expeditor executors
   - label: "[:windows: build launcher]"
@@ -229,11 +213,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: build hab-sup]"
     command:
@@ -242,11 +224,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   # Until we can use the expeditor executors
   - label: "[:windows: build hab-sup]"
@@ -274,11 +254,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: build hab-pkg-export-docker]"
     command:
@@ -287,11 +265,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   # Until we can use the expeditor executors
   - label: "[:windows: build hab-pkg-export-docker]"
@@ -317,11 +293,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: build hab-pkg-export-helm]"
     command:
@@ -330,11 +304,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: build hab-pkg-export-tar]"
     command:
@@ -343,11 +315,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: build hab-pkg-export-tar]"
     command:
@@ -356,11 +326,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   # Until we can use the expeditor executors
   - label: "[:windows: build hab-pkg-export-tar]"
@@ -386,11 +354,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: build hab-pkg-export-tar]"
     command:
@@ -399,11 +365,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - wait
 
@@ -416,11 +380,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - wait
 
@@ -432,11 +394,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:linux: :two: promote to dev]"
     command:
@@ -445,11 +405,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
           environment:
-            - HAB_ORIGIN
             - BUILD_PKG_TARGET=x86_64-linux-kernel2
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
 
   - label: "[:windows: promote to dev]"
     command:
@@ -458,8 +416,9 @@ steps:
       executor:
         docker:
           privileged: true
+          propagate-environment: true
+          always-pull: true
           environment:
-            - HAB_ORIGIN
+            - ACCEPTANCE_HAB_AUTH_TOKEN=$SCOTTHAIN_HAB_AUTH_TOKEN
             - BUILD_PKG_TARGET=x86_64-windows
-            - ACCEPTANCE_HAB_AUTH_TOKEN
-            - ACCEPTANCE_HAB_BLDR_URL
+            - BUILDKITE_AGENT_ACCESS_TOKEN
