@@ -27,4 +27,4 @@ curl https://raw.githubusercontent.com/habitat-sh/habitat/master/components/hab/
 echo "--- Installing latest core/hab from ${channel}"
 hab pkg install --binlink --force --channel ${channel} core/hab
 
-hab --version
+echo "--- $(hab --version)"

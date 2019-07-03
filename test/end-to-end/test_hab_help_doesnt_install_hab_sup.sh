@@ -36,7 +36,10 @@ fi
 
 echo "--- Running \`$HAB_BINARY sup --help\` - which should NOT attempt an install of core/hab-sup"
 
-if [ -z "$($HAB_BINARY sup --help)" ]; then
+hab_bin_run = "$($HAB_BINARY sup --help)"
+echo "--- $hab_bin_run"
+
+if [ -z $hab_bin_run ]; then
   echo
   echo "--- ERROR: $HAB_BINARY was not the proper executable hab binary!"
   exit 1
