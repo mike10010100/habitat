@@ -1304,7 +1304,7 @@ mod election_trigger {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::rumor::election::Term;
+    use crate::rumor::RumorExpiration;
     use habitat_core::service::ServiceGroup;
     use std::str::FromStr;
 
@@ -1335,7 +1335,7 @@ mod tests {
 
         let mut election_with_unknown_leader = Election::new(unknown_leader_member_id,
                                                              &service.service_group,
-                                                             Term::default(),
+                                                             u64::default(),
                                                              suitability,
                                                              true /* has_quorum */);
         election_with_unknown_leader.finish();
@@ -1368,7 +1368,7 @@ mod tests {
 
         let mut election_with_unknown_leader = Election::new(departed_leader.id.clone(),
                                                              &service.service_group,
-                                                             Term::default(),
+                                                             u64::default(),
                                                              suitability,
                                                              true /* has_quorum */);
         election_with_unknown_leader.finish();

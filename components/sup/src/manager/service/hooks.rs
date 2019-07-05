@@ -642,7 +642,7 @@ mod tests {
         let election_store: RumorStore<ElectionRumor> = RumorStore::default();
         let mut election = ElectionRumor::new("member-a",
                                               &sg_one,
-                                              election::Term::default(),
+                                              u64::default(),
                                               10,
                                               true /* has_quorum */);
         election.finish();
