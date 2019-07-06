@@ -1,4 +1,4 @@
-#!/bin/sh
+#!{interpreter}
 # source='{src}'
 {env}
 exec {src} "$@"

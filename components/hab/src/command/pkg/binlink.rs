@@ -25,6 +25,8 @@ const COMMENT_MARKER: &str = "#";
 const SET_OR_EXPORT: &str = "SET";
 #[cfg(unix)]
 const SET_OR_EXPORT: &str = "export";
+#[cfg(unix)]
+const DEFAULT_INTERPRETER: &str = "/bin/sh";
 
 pub fn start(ui: &mut UI,
              ident: &PackageIdent,
@@ -55,6 +57,7 @@ pub fn start(ui: &mut UI,
                   format!("parent directory {}", dst_path.display()))?;
         fs::create_dir_all(&dst_path)?
     }
+
     let binlink = Binlink::new(&src, &dst_path)?;
     let ui_binlinked = format!("Binlinked {} from {} to {}",
                                &binary,
@@ -62,17 +65,15 @@ pub fn start(ui: &mut UI,
                                &binlink.dest.display(),);
     match Binlink::from_file(&binlink.dest) {
         Ok(link) => {
-            if force && link.src != src {
+            if force {
                 fs::remove_file(&link.dest)?;
                 binlink.link(pkg_install.environment_for_command()?)?;
                 ui.end(&ui_binlinked)?;
-            } else if link.src != src {
+            } else {
                 ui.warn(format!("Skipping binlink because {} already exists at {}. Use --force \
                                  to overwrite",
                                 &binary,
                                 &link.dest.display(),))?;
-            } else {
-                ui.end(&ui_binlinked)?;
             }
         }
         Err(_) => {
@@ -162,28 +163,39 @@ impl Binlink {
     pub fn from_file(path: &Path) -> Result<Self> {
         use toml::Value::Table;
 
-        let file = File::open(path)?;
-        for line in BufReader::new(file).lines() {
-            let ln = line?;
-            if ln.to_uppercase().starts_with(COMMENT_MARKER) {
-                let (_, rest) = ln.split_at(COMMENT_MARKER.len());
-                if let Ok(Table(toml_exp)) = rest.parse() {
-                    if let Some(src) = toml_exp.get("source") {
-                        if let Some(val) = src.as_str() {
-                            return Ok(Binlink { dest: path.to_path_buf(),
-                                                src:  PathBuf::from(val), });
+        // its possible the link could already exist as a symlink either
+        // because a previous version of habitat did the binlinking or
+        // the symlink created outside of habitat
+        match fs::read_link(&path) {
+            Ok(lnk) => {
+                Ok(Binlink { dest: path.to_path_buf(),
+                             src:  lnk, })
+            }
+            Err(_) => {
+                let file = File::open(path)?;
+                for line in BufReader::new(file).lines() {
+                    let ln = line?;
+                    if ln.to_uppercase().starts_with(COMMENT_MARKER) {
+                        let (_, rest) = ln.split_at(COMMENT_MARKER.len());
+                        if let Ok(Table(toml_exp)) = rest.parse() {
+                            if let Some(src) = toml_exp.get("source") {
+                                if let Some(val) = src.as_str() {
+                                    return Ok(Binlink { dest: path.to_path_buf(),
+                                                        src:  PathBuf::from(val), });
+                                }
+                            }
                         }
                     }
                 }
+                Err(Error::CannotParseBinlinkSource(path.to_path_buf()))
             }
         }
-        Err(Error::CannotParseBinlinkSource(path.to_path_buf()))
     }
 
     pub fn link(&self, env: HashMap<String, String>) -> Result<()> {
         #[cfg(windows)]
         {
-            fs::write(&self.dest, self.stub_template(env).as_bytes())?;
+            fs::write(&self.dest, self.stub_template(env)?.as_bytes())?;
             Ok(())
         }
 
@@ -196,7 +208,7 @@ impl Binlink {
                                   .truncate(true)
                                   .mode(0o775)
                                   .open(&self.dest)?
-                                  .write_all(self.stub_template(env).as_bytes())?;
+                                  .write_all(self.stub_template(env)?.as_bytes())?;
             Ok(())
         }
     }
@@ -220,24 +232,59 @@ impl Binlink {
         }
     }
 
-    fn stub_template(&self, env: HashMap<String, String>) -> String {
+    fn stub_template(&self, env: HashMap<String, String>) -> Result<String> {
         let mut exports = String::new();
-        for (key, value) in env.into_iter() {
+        for (key, mut value) in env.into_iter() {
+            if key == "PATH" {
+                let mut paths: Vec<PathBuf> = env::split_paths(&value).collect();
+                paths.push(PathBuf::from(Self::env_var("PATH")));
+                value =
+                    env::join_paths(paths)?.into_string()
+                                           .expect("Failed to convert binlink PATH to utf8 string");
+            }
             exports.push_str(&format!("{} {}={}\n", SET_OR_EXPORT, key, value));
         }
 
         #[cfg(windows)]
         {
-            format!(include_str!("../../../static/template_binstub.bat"),
-                    src = self.src.display(),
-                    env = exports)
+            Ok(format!(include_str!("../../../static/template_binstub.\
+                                     bat"),
+                       src = self.src.display(),
+                       env = exports))
         }
 
         #[cfg(unix)]
         {
-            format!(include_str!("../../../static/template_binstub.sh"),
-                    src = self.src.display(),
-                    env = exports)
+            // We need to prevent the binstub from using itself as an interpreter.
+            // On linux we use `/bin/sh` as the binstub interpreter and if this package
+            // includes a `sh` binary, we risk a circularly linked interpretter. We can
+            // detect if the link path is the same as the interpreter and if so, use the
+            // src binary as the interpreter.
+            let interpreter = {
+                if DEFAULT_INTERPRETER == &self.dest.to_string_lossy() {
+                    self.src
+                        .to_str()
+                        .expect("Failed to convert binlink src path to utf8 string")
+                } else {
+                    DEFAULT_INTERPRETER
+                }
+            };
+
+            Ok(format!(include_str!("../../../static/template_binstub.sh"),
+                       src = self.src.display(),
+                       env = exports,
+                       interpreter = interpreter))
+        }
+    }
+
+    fn env_var(name: &str) -> String {
+        #[cfg(windows)]
+        {
+            format!("%{}%", name)
+        }
+        #[cfg(unix)]
+        {
+            format!("${}", name)
         }
     }
 }
@@ -294,6 +341,10 @@ mod test {
         let hypnoanalyze_link = "hypnoanalyze.exe";
         #[cfg(target_os = "windows")]
         let hypnoanalyze_link = "hypnoanalyze.bat";
+        #[cfg(target_os = "linux")]
+        let curr_path = ":$PATH";
+        #[cfg(target_os = "windows")]
+        let curr_path = ";%PATH%";
 
         start(&mut ui,
               &ident,
@@ -301,7 +352,7 @@ mod test {
               &dst_path,
               rootfs.path(),
               force).unwrap();
-        assert!(fs::read_to_string(rootfs_bin_dir.join(magicate_link)).unwrap().contains(&format!("PATH={}", rootfs_src_dir.to_string_lossy())));
+        assert!(fs::read_to_string(rootfs_bin_dir.join(magicate_link)).unwrap().contains(&format!("PATH={}{}", rootfs_src_dir.to_string_lossy(), curr_path)));
         assert_eq!(rootfs_src_dir.join("magicate.exe"),
                    Binlink::from_file(&rootfs_bin_dir.join(magicate_link)).unwrap()
                                                                           .src);
@@ -312,7 +363,7 @@ mod test {
               &dst_path,
               rootfs.path(),
               force).unwrap();
-        assert!(fs::read_to_string(rootfs_bin_dir.join(hypnoanalyze_link)).unwrap().contains(&format!("PATH={}", rootfs_src_dir.to_string_lossy())));
+        assert!(fs::read_to_string(rootfs_bin_dir.join(hypnoanalyze_link)).unwrap().contains(&format!("PATH={}{}", rootfs_src_dir.to_string_lossy(), curr_path)));
         assert_eq!(rootfs_src_dir.join("hypnoanalyze.exe"),
                    Binlink::from_file(&rootfs_bin_dir.join(hypnoanalyze_link)).unwrap()
                                                                               .src);
