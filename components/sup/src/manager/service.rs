@@ -433,7 +433,7 @@ impl Service {
 
     /// Performs updates and executes hooks.
     ///
-    /// Returns `true` if the service was restarted or reconfigured.
+    /// Returns `true` if the service was marked to be restarted or reconfigured.
     pub fn tick(&mut self,
                 census_ring: &CensusRing,
                 launcher: &LauncherCli,
@@ -902,7 +902,7 @@ impl Service {
         win_perm::harden_path(path.as_ref())
     }
 
-    /// Returns `true` if the service was restarted or reconfigured.
+    /// Returns `true` if the service was marked to be restarted or reconfigured.
     fn execute_hooks(&mut self,
                      launcher: &LauncherCli,
                      executor: &TaskExecutor,
