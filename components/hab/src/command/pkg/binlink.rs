@@ -25,7 +25,7 @@ const COMMENT_MARKER: &str = "#";
 const SET_OR_EXPORT: &str = "SET";
 #[cfg(unix)]
 const SET_OR_EXPORT: &str = "export";
-#[cfg(unix)]
+
 const DEFAULT_INTERPRETER: &str = "/bin/sh";
 
 pub fn start(ui: &mut UI,
@@ -58,7 +58,7 @@ pub fn start(ui: &mut UI,
         fs::create_dir_all(&dst_path)?
     }
 
-    let binlink = Binlink::new(&src, &dst_path)?;
+    let binlink = Binlink::new(&src, &dst_path, &PathBuf::from(DEFAULT_INTERPRETER))?;
     let ui_binlinked = format!("Binlinked {} from {} to {}",
                                &binary,
                                &pkg_install.ident(),
@@ -149,15 +149,18 @@ fn is_dest_on_path(dest_dir: &Path) -> bool {
     }
 }
 
+#[allow(dead_code)]
 struct Binlink {
-    dest: PathBuf,
-    src:  PathBuf,
+    dest:                PathBuf,
+    src:                 PathBuf,
+    default_interpreter: PathBuf,
 }
 
 impl Binlink {
-    pub fn new(src: &Path, dest_dir: &Path) -> Result<Self> {
-        Ok(Self { dest: Self::binstub_path(&src, dest_dir)?,
-                  src:  src.to_path_buf(), })
+    pub fn new(src: &Path, dest_dir: &Path, default_interpreter: &Path) -> Result<Self> {
+        Ok(Self { dest:                Self::binstub_path(&src, dest_dir)?,
+                  src:                 src.to_path_buf(),
+                  default_interpreter: default_interpreter.to_path_buf(), })
     }
 
     pub fn from_file(path: &Path) -> Result<Self> {
@@ -168,8 +171,9 @@ impl Binlink {
         // the symlink created outside of habitat
         match fs::read_link(&path) {
             Ok(lnk) => {
-                Ok(Binlink { dest: path.to_path_buf(),
-                             src:  lnk, })
+                Ok(Binlink { dest:                path.to_path_buf(),
+                             src:                 lnk,
+                             default_interpreter: PathBuf::from(DEFAULT_INTERPRETER), })
             }
             Err(_) => {
                 let file = File::open(path)?;
@@ -180,8 +184,10 @@ impl Binlink {
                         if let Ok(Table(toml_exp)) = rest.parse() {
                             if let Some(src) = toml_exp.get("source") {
                                 if let Some(val) = src.as_str() {
-                                    return Ok(Binlink { dest: path.to_path_buf(),
-                                                        src:  PathBuf::from(val), });
+                                    return Ok(Binlink { dest:                path.to_path_buf(),
+                                                        src:                 PathBuf::from(val),
+                                                        default_interpreter:
+                                                            PathBuf::from(DEFAULT_INTERPRETER), });
                                 }
                             }
                         }
@@ -261,19 +267,17 @@ impl Binlink {
             // detect if the link path is the same as the interpreter and if so, use the
             // src binary as the interpreter.
             let interpreter = {
-                if DEFAULT_INTERPRETER == &self.dest.to_string_lossy() {
-                    self.src
-                        .to_str()
-                        .expect("Failed to convert binlink src path to utf8 string")
+                if self.default_interpreter == self.dest {
+                    &self.src
                 } else {
-                    DEFAULT_INTERPRETER
+                    &self.default_interpreter
                 }
             };
 
             Ok(format!(include_str!("../../../static/template_binstub.sh"),
                        src = self.src.display(),
                        env = exports,
-                       interpreter = interpreter))
+                       interpreter = interpreter.display()))
         }
     }
 
@@ -367,6 +371,25 @@ mod test {
         assert_eq!(rootfs_src_dir.join("hypnoanalyze.exe"),
                    Binlink::from_file(&rootfs_bin_dir.join(hypnoanalyze_link)).unwrap()
                                                                               .src);
+    }
+
+    #[test]
+    #[cfg(unix)]
+    fn link_points_to_interpreter() {
+        use std::path::PathBuf;
+
+        let rootfs = TempDir::new().unwrap();
+        let rootfs_bin_dir = rootfs.path().join("bin");
+        let rootfs_bin_sh = rootfs_bin_dir.join("sh");
+        fs::create_dir_all(&rootfs_bin_dir).unwrap();
+
+        let link = Binlink::new(&PathBuf::from("/src/binary/sh"),
+                                &rootfs_bin_dir,
+                                &rootfs_bin_sh).unwrap();
+        link.link(HashMap::new()).unwrap();
+
+        assert!(fs::read_to_string(rootfs_bin_sh).unwrap()
+                                                 .contains("#!/src/binary/sh"));
     }
 
     #[test]
